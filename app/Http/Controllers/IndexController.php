@@ -24,8 +24,13 @@ class IndexController extends Controller
     // Demo 测试使用
     public function test(Request $request)
     {
-        dd(date('G'));
-        $user_info = $request->cookie('userInfo');
+        for ($i = 5; $i > 0;$i--) {
+            dump($i.'秒后就会爆炸');
+            sleep(1);
+        }
+        print_r('💣💣💣💣💣💣💣💣💣💣💣');
+        die;
+//        $user_info = $request->cookie('userInfo');
         dd(json_decode($user_info));
 //        $obj = new \stdClass();
 //        $obj->name = '宋文博';
@@ -60,7 +65,7 @@ class IndexController extends Controller
     public function chooseSchool(Request $request,Student $studentObj)
     {
         if(!$this->cookieValidate()) {
-            return response($this->returnData(0,'非登陆状态，无法操作'));
+            return response($this->returnData(2,'非登陆状态，无法操作'));
         }
         // 验证
         $userInfo = json_decode(Cookie::get('userInfo'));
@@ -85,11 +90,15 @@ class IndexController extends Controller
         // 拼接时间
         $h = date('G');
         $key = $school.'_'.$h;
-        $other_school .= '_'.$h;
-        Redis::zrem($other_school,$card_id);
+        $school2 = $other_school.'_'.$h;
+        Redis::zrem($school2,$card_id);
         $score = $userInfo->total_score;
-        // 存入redis中
+        // 存入redis zset中
         Redis::zadd($key,$score,$card_id);
+        // 存入set中用于统计
+        if(Redis::sismember("SET_".$other_school,$card_id)) {
+            Redis::smove("SET_".$other_school,"SET_".$school,$card_id);
+        }
 
         // 返回全部报名人员信息
         $rank = $this->getStudentRank($key,$card_id);
@@ -113,15 +122,23 @@ class IndexController extends Controller
         }
         $userInfo = json_decode(Cookie::get('userInfo'));
         $card_id = $userInfo->card_id;
-        $school = $request->get('school');
-        // 报名学校是否正确
-        if(!in_array($school,[self::SCHOOL_NATION,self::SCHOOL_ONE])) {
-            return response($this->returnData(0,'传入学校错误，请传入正确key值，SCHOOL_ONE=>托克托县第一中学，SCHOOL_NATION=>托克托县民族中学'));
-        }
+//        $school = $request->get('school');
+//        // 报名学校是否正确
+//        if(!in_array($school,[self::SCHOOL_NATION,self::SCHOOL_ONE])) {
+//            return response($this->returnData(0,'传入学校错误，请传入正确key值，SCHOOL_ONE=>托克托县第一中学，SCHOOL_NATION=>托克托县民族中学'));
+//        }
         // 获取学生信息
         $studentInfo = $studentObj->getInfoByCard($card_id);
         if(empty($studentInfo)) {
             return response($this->returnData(0,'请输入正确的准考证号'));
+        }
+
+        // 获取报名学校
+        $isOne = Redis::sismember("SET_SCHOOL_ONE",$card_id);
+        if($isOne) {
+            $school = self::SCHOOL_ONE;
+        } else {
+            $school = self::SCHOOL_NATION;
         }
 
         $h = date('G');
