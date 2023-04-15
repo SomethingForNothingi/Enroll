@@ -165,6 +165,7 @@ class IndexController extends Controller
         $userInfo['sex'] = $user->sex;
         $userInfo['nation'] = $user->nation;
         $userInfo['apply'] = $user->apply;
+        $userInfo['idcard'] = $user->idcard;
 
         return response($this->returnData(1,'登陆成功',$userInfo))->cookie('userInfo',$user);
 
