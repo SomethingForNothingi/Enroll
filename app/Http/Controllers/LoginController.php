@@ -19,9 +19,20 @@ class LoginController extends Controller
         $validator = Validator::make($request->post() , [
             'card_id'  =>  'required',
             'password'  =>  'required',
+            'captcha'  =>  'required',
         ] ,[]);
         if($validator->fails()) {
             return response($this->returnData(0,'请输入账号/密码'));
+        }
+
+        if(!$request->post('key'))  {
+            return response($this->returnData(0,'请传入key'));
+        }
+
+        // 验证码
+        $captcha = $this->validateCaptcha($request);
+        if(!$captcha) {
+            return response($this->returnData(0,'验证码错误'));
         }
         // 获取学生信息
         $user = $student->getInfoByCard($card);
@@ -55,5 +66,27 @@ class LoginController extends Controller
         return response($this->returnData(1,'登陆成功',$userInfo))->cookie('userInfo',$user,$limit);
     }
 
+    /**
+     * 获取验证码
+     */
+    public function getCaptcha()
+    {
+        return response(
+            $this->returnData(1,'获取验证成功',app('captcha')->create('default', true))
+        );
 
+    }
+    /**
+     * 验证码
+     */
+    public function validateCaptcha(Request $request): bool
+    {
+        $captcha = $request->input('captcha'); //验证码
+        $key = $request->input('key'); //key
+        if (captcha_api_check($captcha , $key)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
