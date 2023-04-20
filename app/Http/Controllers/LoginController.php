@@ -19,21 +19,21 @@ class LoginController extends Controller
         $validator = Validator::make($request->post() , [
             'card_id'  =>  'required',
             'password'  =>  'required',
-            'captcha'  =>  'required',
+//            'captcha'  =>  'required',
         ] ,[]);
         if($validator->fails()) {
             return response($this->returnData(0,'请输入账号/密码'));
         }
 
-        if(!$request->post('key'))  {
-            return response($this->returnData(0,'请传入key'));
-        }
+//        if(!$request->post('key'))  {
+//            return response($this->returnData(0,'请传入key'));
+//        }
 
         // 验证码
-        $captcha = $this->validateCaptcha($request);
-        if(!$captcha) {
-            return response($this->returnData(0,'验证码错误'));
-        }
+//        $captcha = $this->validateCaptcha($request);
+//        if(!$captcha) {
+//            return response($this->returnData(0,'验证码错误'));
+//        }
         // 获取学生信息
         $user = $student->getInfoByCard($card);
         if(!$user) {
