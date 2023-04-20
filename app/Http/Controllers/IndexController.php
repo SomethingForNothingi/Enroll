@@ -121,7 +121,7 @@ class IndexController extends Controller
      */
     public function nowRank(Request $request,Student $studentObj) {
         if(!$this->cookieValidate()) {
-            return response($this->returnData(0,'非登陆状态，无法操作'));
+            return response($this->returnData(2,'非登陆状态，无法操作'));
         }
         $userInfo = json_decode(Cookie::get('userInfo'));
         $card_id = $userInfo->card_id;
@@ -148,7 +148,12 @@ class IndexController extends Controller
         $total = self::CAN_ENROLL[$school][$h];
         $count = $this->getStudentCountByKey($key);
 
-        return response($this->returnData(1,'统招'.$total.'人，共计'.$count.'人报名，当前排名第'.$rank));
+        return response($this->returnData(1,'统招'.$total.'人，共计'.$count.'人报名，当前排名第'.$rank,
+            [
+                'total' => $total,
+                'count' => $count,
+                'rank'  => $rank
+                ]));
     }
 
     /**
