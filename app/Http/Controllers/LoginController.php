@@ -60,10 +60,11 @@ class LoginController extends Controller
         $userInfo['apply'] = $user->apply;
 
         // cookie时间
-        $minute = date('i');
-        $limit = 60 - $minute;
+//        $minute = date('i');
+//        $limit = 60 - $minute;
 
-        return response($this->returnData(1,'登陆成功',$userInfo))->cookie('userInfo',$user,$limit);
+//        return response($this->returnData(1,'登陆成功',$userInfo))->cookie('userInfo',$user,$limit);
+        return response($this->returnData(1,'登陆成功',$userInfo))->cookie('userInfo',$user);
     }
 
     /**
