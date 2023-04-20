@@ -24,3 +24,4 @@ Route::any('choose',[\App\Http\Controllers\IndexController::class,'chooseSchool'
 Route::any('getrank',[\App\Http\Controllers\IndexController::class,'nowRank']);
 Route::any('getuserandpwd',[\App\Http\Controllers\IndexController::class,'getUserAndPwd']);
 Route::any('getcaptcha',[\App\Http\Controllers\LoginController::class,'getCaptcha']);
+Route::any('userinfo',[\App\Http\Controllers\IndexController::class,'getUserInfo']);

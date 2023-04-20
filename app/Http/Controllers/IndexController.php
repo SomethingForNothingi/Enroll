@@ -50,7 +50,7 @@ class IndexController extends Controller
      */
     public function cookieValidate(): bool
     {
-        if(!Cookie::has('userInfo')) {
+        if (!Cookie::has('userInfo')) {
             return false;
         }
         return true;
@@ -72,7 +72,7 @@ class IndexController extends Controller
         $card_id = $userInfo->card_id;
         $school = $request->get('school');
         // 报名学校是否正确
-        if(!in_array($school,[self::SCHOOL_NATION,self::SCHOOL_ONE])) {
+        if (!in_array($school,[self::SCHOOL_NATION,self::SCHOOL_ONE])) {
             return response($this->returnData(0,'传入学校错误，请传入正确key值，SCHOOL_ONE=>托克托县第一中学，SCHOOL_NATION=>托克托县民族中学'));
         }
         // 验证是否允许该时段登陆
@@ -139,20 +139,23 @@ class IndexController extends Controller
         } else {
             $school = self::SCHOOL_NATION;
         }
+        $enroll_school = self::SCHOOL[$school];
 
         $h = date('G');
         $key = $school.'_'.$h;
         // 返回全部报名人员信息
         $rank = $this->getStudentRank($key,$card_id);
         //TODO 需要加入统招人数（由计算公式所得）
-        $total = self::CAN_ENROLL[$school][$h];
+//        $total = self::CAN_ENROLL[$school][$h];
+        $total = 100;
         $count = $this->getStudentCountByKey($key);
 
         return response($this->returnData(1,'统招'.$total.'人，共计'.$count.'人报名，当前排名第'.$rank,
             [
                 'total' => $total,
                 'count' => $count,
-                'rank'  => $rank
+                'rank'  => $rank,
+                'school' => $enroll_school
                 ]));
     }
 
@@ -174,6 +177,18 @@ class IndexController extends Controller
 
         return response($this->returnData(1,'登陆成功',$userInfo))->cookie('userInfo',$user);
 
+    }
+
+    /**
+     * @return Application|Response|ResponseFactory
+     */
+    public function getUserInfo(Request $request)
+    {
+        if (!$this->cookieValidate()) {
+            return response($this->returnData(2,'非登陆状态，无法操作'));
+        }
+        $data = $request->cookie('userInfo');
+        return  response($this->returnData(1,'获取成功',json_decode($data, true)));
     }
 
 }
