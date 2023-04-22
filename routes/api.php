@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use Illuminate\Routing\Router;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,12 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::any('login',[AuthController::class,'login']);
+
+
+Route::group(['middleware' => ['auth:api']], function (Router $router) {
+    // 退出
+    $router->get('logout', [AuthController::class, 'logout']);
+
 });
 
 Route::get('test',[\App\Http\Controllers\IndexController::class,'test']);
-Route::any('login',[\App\Http\Controllers\LoginController::class,'login']);
 Route::any('choose',[\App\Http\Controllers\IndexController::class,'chooseSchool']);
 Route::any('getrank',[\App\Http\Controllers\IndexController::class,'nowRank']);
 Route::any('getuserandpwd',[\App\Http\Controllers\IndexController::class,'getUserAndPwd']);

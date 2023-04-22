@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Redis;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    public CONST FAIL = 0;
+    public CONST OK = 1;
+    public CONST FORBIDDEN = 2;
 
     /**
      * 初始化
