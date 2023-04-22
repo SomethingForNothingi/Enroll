@@ -7,16 +7,14 @@ use Illuminate\Support\Facades\Auth;
 
 class   AuthController extends Controller
 {
-    CONST GUARD = 'api';
-
     public function login(Request $request)
     {
         $params = $request->all();
         // 验证码
-        $captcha = $this->validateCaptcha($params['key'], $params['captcha']);
-        if(!$captcha) {
-            return response($this->returnData(self::FAIL,'验证码错误'));
-        }
+//        $captcha = $this->validateCaptcha($params['key'], $params['captcha']);
+//        if(!$captcha) {
+//            return response($this->returnData(self::FAIL,'验证码错误'));
+//        }
         //验证
         $credentials =[
             'card_id' => $params['card_id'],
@@ -39,7 +37,7 @@ class   AuthController extends Controller
         return $this->returnData(self::OK, '登陆成功', ['token' => $token, 'user' => $userData]);
     }
 
-    public function logout()
+    public function logout(): array
     {
         Auth::guard(self::GUARD)->logout();
         return $this->returnData(self::FORBIDDEN);
@@ -51,7 +49,7 @@ class   AuthController extends Controller
     public function getCaptcha()
     {
         return response(
-            $this->returnData(1,'获取验证成功',app('captcha')->create('default', true))
+            $this->returnData(self::OK,'获取验证成功',app('captcha')->create('default', true))
         );
 
     }

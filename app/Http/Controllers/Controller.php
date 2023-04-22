@@ -14,6 +14,7 @@ class Controller extends BaseController
     public CONST FAIL = 0;
     public CONST OK = 1;
     public CONST FORBIDDEN = 2;
+    public CONST GUARD = 'api';
 
     /**
      * 初始化

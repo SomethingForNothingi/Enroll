@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\IndexController;
 use Illuminate\Routing\Router;
 
 
@@ -16,18 +17,16 @@ use Illuminate\Routing\Router;
 |
 */
 
+// 登陆
 Route::any('login',[AuthController::class,'login']);
-
+// 获取验证码
+Route::any('getcaptcha',[AuthController::class,'getCaptcha']);
 
 Route::group(['middleware' => ['auth:api']], function (Router $router) {
     // 退出
     $router->get('logout', [AuthController::class, 'logout']);
-
+    // 报名
+    $router->post('choose',[IndexController::class,'chooseSchool']);
+    // 当前排名
+    $router->post('getrank',[IndexController::class,'nowRank']);
 });
-
-Route::get('test',[\App\Http\Controllers\IndexController::class,'test']);
-Route::any('choose',[\App\Http\Controllers\IndexController::class,'chooseSchool']);
-Route::any('getrank',[\App\Http\Controllers\IndexController::class,'nowRank']);
-Route::any('getuserandpwd',[\App\Http\Controllers\IndexController::class,'getUserAndPwd']);
-Route::any('getcaptcha',[\App\Http\Controllers\LoginController::class,'getCaptcha']);
-Route::any('userinfo',[\App\Http\Controllers\IndexController::class,'getUserInfo']);
