@@ -26,12 +26,6 @@ class LoginController extends Controller
         }
 
 
-        // 获取学生信息
-        $user = $student->getInfoByCard($card);
-        if(!$user) {
-            return response($this->returnData(0,'准考证号/考生号错误，请重新输入'));
-        }
-
         // 获取密码
         $passwordTrue = strtoupper(substr($user->idcard,-6));
         if($pwd != $passwordTrue) {

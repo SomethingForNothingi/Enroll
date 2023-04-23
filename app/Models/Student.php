@@ -16,20 +16,8 @@ class Student extends Authenticatable implements JWTSubject
     protected $table = 'student';
     protected $fillable = ['password'];
 
-    public const UPDATED_AT = false;
 
-    /**
-     * 根据学号或者准考证号找到学生信息
-     * @param $card
-     * @return Builder|Model|object|null
-     */
-    public function getInfoByCard($card) {
-        return self::query()->where('card_id',$card)->orWhere('student_id',$card)->first();
-    }
 
-    public function getTest() {
-        return self::query()->orderByRaw('rand()')->first();
-    }
     // Rest omitted for brevity
 
     /**

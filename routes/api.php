@@ -30,3 +30,4 @@ Route::group(['middleware' => ['auth:api']], function (Router $router) {
     // 当前排名
     $router->post('getrank',[IndexController::class,'nowRank']);
 });
+Route::any('test',[IndexController::class,'test']);
