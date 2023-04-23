@@ -29,5 +29,7 @@ Route::group(['middleware' => ['auth:api']], function (Router $router) {
     $router->post('choose',[IndexController::class,'chooseSchool']);
     // 当前排名
     $router->post('getrank',[IndexController::class,'nowRank']);
+    // 返回用户信息
+    $router->post('getuserinfo',[IndexController::OK, 'getUserInfo']);
 });
 Route::any('test',[IndexController::class,'test']);
