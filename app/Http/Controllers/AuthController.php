@@ -11,10 +11,10 @@ class   AuthController extends Controller
     {
         $params = $request->all();
         // 验证码
-//        $captcha = $this->validateCaptcha($params['key'], $params['captcha']);
-//        if(!$captcha) {
-//            return response($this->returnData(self::FAIL,'验证码错误'));
-//        }
+        $captcha = $this->validateCaptcha($params['key'], $params['captcha']);
+        if(!$captcha) {
+            return response($this->returnData(self::FAIL,'验证码错误'));
+        }
         //验证
         $credentials =[
             'card_id' => $params['card_id'],
@@ -54,7 +54,7 @@ class   AuthController extends Controller
 
     }
     /**
-     * 验证码
+     * 验证验证码
      */
     public function validateCaptcha($key , $captcha): bool
     {
