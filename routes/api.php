@@ -18,18 +18,17 @@ use Illuminate\Routing\Router;
 */
 
 // 登陆
-Route::any('login',[AuthController::class,'login']);
+Route::any('login', [ AuthController::class, 'login' ]);
 // 获取验证码
-Route::any('getcaptcha',[AuthController::class,'getCaptcha']);
+Route::any('getcaptcha', [ AuthController::class, 'getCaptcha' ]);
 
-Route::group(['middleware' => ['auth:api']], function (Router $router) {
+Route::group([ 'middleware' => [ 'auth:api' ] ], function (Router $router) {
     // 退出
-    $router->get('logout', [AuthController::class, 'logout']);
+    $router->get('logout', [ AuthController::class, 'logout' ]);
     // 报名
-    $router->post('choose',[IndexController::class,'chooseSchool']);
+    $router->post('choose', [ IndexController::class, 'chooseSchool' ]);
     // 当前排名
-    $router->post('getrank',[IndexController::class,'nowRank']);
+    $router->post('getrank', [ IndexController::class, 'nowRank' ]);
     // 返回用户信息
-    $router->post('getuserinfo',[IndexController::class, 'getUserInfo']);
+    $router->post('getuserinfo', [ IndexController::class, 'getUserInfo' ]);
 });
-Route::any('test',[IndexController::class,'test']);

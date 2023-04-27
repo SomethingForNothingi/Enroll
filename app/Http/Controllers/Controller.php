@@ -11,10 +11,11 @@ use Illuminate\Support\Facades\Redis;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    public CONST FAIL = 0;
-    public CONST OK = 1;
-    public CONST FORBIDDEN = 2;
-    public CONST GUARD = 'api';
+
+    public const FAIL = 0;
+    public const OK = 1;
+    public const FORBIDDEN = 2;
+    public const GUARD = 'api';
 
     /**
      * 初始化
@@ -26,7 +27,7 @@ class Controller extends BaseController
     // 学校可报名人数(按时间)
     public const CAN_ENROLL = [
         // 一中
-        'SCHOOL_ONE' => [
+        'SCHOOL_ONE'    => [
             1 => 312,
             2 => 22,
             3 => 44,
@@ -47,11 +48,11 @@ class Controller extends BaseController
 
     // 学生排名可登陆登陆时间段
     public const CAN_LOGIN = [
-        8 => [
+        8  => [
             'min' => 1,
             'max' => 100
-            ],
-        9 => [
+        ],
+        9  => [
             'min' => 101,
             'max' => 215
         ],
@@ -72,6 +73,7 @@ class Controller extends BaseController
             'max' => 1062
         ]
     ];
+
     /**
      * @param $code int 0错误，1失败
      * @param $msg string 返回提示信息
@@ -82,7 +84,7 @@ class Controller extends BaseController
     {
         return [
             'code' => $code,
-            'msg' => $msg,
+            'msg'  => $msg,
             'data' => $data
         ];
     }
@@ -97,23 +99,23 @@ class Controller extends BaseController
         //TODO 记得注掉
         return true;
         //TODO 日期检测，记得核对确认
-        if(date('Y-m-d') == '2023.06.01') {
+        if (date('Y-m-d') == '2023.06.01') {
             return false;
         }
 
         $hour = date('G');
-        if(!isset(self::CAN_LOGIN[$hour])) {
+        if (!isset(self::CAN_LOGIN[$hour])) {
             return false;
         }
         $interval = self::CAN_LOGIN[$hour];
 
-        if(empty($interval)) {
+        if (empty($interval)) {
             return false;
         }
         $min = $interval['min'];
         $max = $interval['max'];
 
-        if($rank >= $min || $rank <= $max) {
+        if ($rank >= $min || $rank <= $max) {
             return true;
         }
 
@@ -138,9 +140,9 @@ class Controller extends BaseController
      */
     function getStudentRank($key, $card_id): int
     {
-        $scoreInfo = Redis::zrevrange($key,0,-1,['withscores'=>true]);
+        $scoreInfo = Redis::zrevrange($key, 0, -1, [ 'withscores' => true ]);
         $cards = array_keys($scoreInfo);
-        $rank = array_search($card_id,$cards);
+        $rank = array_search($card_id, $cards);
         return $rank + 1;
     }
 }

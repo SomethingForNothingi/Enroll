@@ -24,16 +24,6 @@ class IndexController extends Controller
         'SCHOOL_ONE'    => '托克托县第一中学',
         'SCHOOL_NATION' => '托克托县民族中学'
     ];
-
-    public function test()
-    {
-        $student = Student::query()->where('id', '>=', 988)->get()->toArray();
-        foreach ($student as $v) {
-            $password = Hash::make(strtoupper(substr($v['idcard'], -6)));
-            Student::query()->where('id', '=', $v['id'])->update([ 'password' => $password ]);
-        }
-    }
-
     /**
      * 选择学校
      * @param Request $request
