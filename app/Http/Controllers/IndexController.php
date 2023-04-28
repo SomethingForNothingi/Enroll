@@ -86,8 +86,10 @@ class IndexController extends Controller
         $isOne = Redis::sismember("SET_SCHOOL_ONE", $card_id);
         if ($isOne) {
             $school = self::SCHOOL_ONE;
-        } else {
+        } else if(Redis::sismember("SET_SCHOOL_NATION", $card_id)){
             $school = self::SCHOOL_NATION;
+        } else {
+            return response($this->returnData(self::FAIL, '', []));
         }
         $enroll_school = self::SCHOOL[$school];
 
@@ -100,7 +102,7 @@ class IndexController extends Controller
 
         $count = $this->getStudentCountByKey($key);
 
-        return response($this->returnData(self::OK, '统招' . $total . '人，共计' . $count . '人报名，当前排名第' . $rank,
+        return response($this->returnData(self::OK, '',
             [
                 'total'  => $total,
                 'count'  => $count,
