@@ -124,7 +124,7 @@ class IndexController extends Controller
     {
         $one = Student::query()->inRandomOrder()->first();
         $data['card_id'] = $one->card_id;
-        $data['password'] = Hash::make(strtoupper(substr($one->idcard, -6)));
+        $data['password'] = strtoupper(substr($one->idcard, -6));
         return $this->returnData(self::OK, '', $data);
     }
 
