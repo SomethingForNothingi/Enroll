@@ -2,8 +2,12 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\Controller;
+use App\Models\Apply;
+use App\Models\Student;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 
 // Redis数据同步数据库
 class SyncData extends Command
@@ -40,11 +44,11 @@ class SyncData extends Command
     public function handle()
     {
         $this->info('民族学校数据同步---');
-        $this->syncData('NATION');
+        $this->syncData('SCHOOL_NATION');
         $this->info('民族学校数据同步结束---');
 
         $this->info('一中数据同步---');
-        $this->syncData('ONE');
+        $this->syncData('SCHOOL_ONE');
         $this->info('一中数据同步结束---');
         return 0;
     }
@@ -55,6 +59,32 @@ class SyncData extends Command
      */
     public function syncData(string $school)
     {
+        if ($school == 'SCHOOL_ONE') {
+            $apply = '一中';
+        } else {
+            $apply = '民中';
+        }
+        $controller = new Controller();
+        $batch = $controller::CAN_ENROLL[$school];
+        $data = [];
+        foreach ($batch as $k => $v) {
+            $key = $school . '_' . $k;
+            $data[$k] = Redis::zrevrange($key, 0, -1);
+        }
+        // 获取所有学号
+        $dataFilter = collect($data)->collapse();
+
+        $studentData = Student::query()->whereIn('card_id',$dataFilter)->get()->toArray();
+        $field = (new Apply())->getFillable();
+        $insert = [];
+        foreach ($studentData as $k => $v)
+        {
+            foreach ($field as $v2) {
+                $insert[$k][$v2] = $v[$v2];
+            }
+            $insert[$k]['apply'] = $apply;
+        }
+        dd($insert);
 
     }
 }
