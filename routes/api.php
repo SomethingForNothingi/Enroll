@@ -21,6 +21,8 @@ use Illuminate\Routing\Router;
 Route::any('login', [ AuthController::class, 'login' ]);
 // 获取验证码
 Route::any('getcaptcha', [ AuthController::class, 'getCaptcha' ]);
+// 随机获取账号
+Route::any('getup', [ IndexController::class, 'getOne' ]);
 
 Route::group([ 'middleware' => [ 'auth:api' ] ], function (Router $router) {
     // 退出

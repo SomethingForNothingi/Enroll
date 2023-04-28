@@ -120,6 +120,14 @@ class IndexController extends Controller
         return response($this->returnData(self::OK, '获取成功', [ 'user' => $data ]));
     }
 
+    public function getOne()
+    {
+        $one = Student::query()->inRandomOrder()->first();
+        $data['card_id'] = $one->card_id;
+        $data['password'] = Hash::make(strtoupper(substr($one->idcard, -6)));
+        return $this->returnData(self::OK, '', $data);
+    }
+
 
     /**
      * 返回当前报名批次
