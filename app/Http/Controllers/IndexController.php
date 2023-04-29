@@ -134,6 +134,6 @@ class IndexController extends Controller
      */
     public function getBatch(): int
     {
-        return 1;
+        return date('G') % 2;
     }
 }

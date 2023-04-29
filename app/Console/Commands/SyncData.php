@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Apply;
 use App\Models\Student;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Storage;
 
 // Redis数据同步数据库
 class SyncData extends Command
@@ -71,20 +73,32 @@ class SyncData extends Command
             $key = $school . '_' . $k;
             $data[$k] = Redis::zrevrange($key, 0, -1);
         }
-        // 获取所有学号
-        $dataFilter = collect($data)->collapse();
-
-        $studentData = Student::query()->whereIn('card_id',$dataFilter)->get()->toArray();
-        $field = (new Apply())->getFillable();
-        $insert = [];
-        foreach ($studentData as $k => $v)
+        // 插入数据
+        foreach ($data as $batch_key => $batch_val)
         {
-            foreach ($field as $v2) {
-                $insert[$k][$v2] = $v[$v2];
+            $insert = [];
+            // 一批人
+            foreach ($batch_val as $rank => $card_id) {
+                $insert[$rank]['batch'] = $batch_key;
+                $insert[$rank]['batch_rank'] = $rank + 1;
+                $insert[$rank]['card_id'] = $card_id;
+                $insert[$rank]['appl2y'] = $apply;
             }
-            $insert[$k]['apply'] = $apply;
-        }
-        dd($insert);
+            // 插入数据库
+            $this->info('第'.$batch_key.'批次数据同步，共计'.count($insert).'人');
 
+            $insert_data = array_chunk($insert, 50);
+            foreach ($insert_data as $v) {
+                try {
+                    DB::beginTransaction();
+                    Apply::query()->insert($v);
+                    DB::commit();
+                } catch (\Exception $e) {
+                    DB::rollBack();
+                    $this->error('Mysql插入错误');
+                    $this->error($e->getMessage());
+                }
+            }
+        }
     }
 }

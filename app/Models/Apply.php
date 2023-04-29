@@ -9,7 +9,7 @@ class Apply extends Model
 {
     use HasFactory;
     protected $table = 'apply';
-    protected $fillable = ['student_id', 'card_id', 'name', 'sex', 'nation', 'idcard', 'apply', 'rank'];
+    protected $fillable = [ 'card_id', 'apply', 'rank'];
 
     public function getFillable()
     {
