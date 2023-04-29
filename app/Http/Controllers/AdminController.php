@@ -42,6 +42,6 @@ class AdminController extends Controller
         } else {
             $data = $handle->paginate($pageSize)->appends([ 'current_page' => $page ])->toArray();
         }
-        return $this->returnData(0, '', $data);
+        return $this->returnData(self::OK, '', $data);
     }
 }
