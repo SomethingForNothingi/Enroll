@@ -17,6 +17,26 @@ class Student extends Authenticatable implements JWTSubject
     protected $fillable = ['password'];
 
 
+    public function scopeSearch(Builder $builder, array $search): Builder
+    {
+        if (!empty($search['name'])) {
+            $builder->where($this->table.'.name', 'like', '%'.$search['name'].'%');
+        }
+
+        if (isset($search['apply'])) {
+            $builder->where('apply.apply', $search['apply']);
+        }
+
+        if (!empty($search['batch'])) {
+            $builder->where('apply.batch', $search['batch']);
+        }
+
+        if (!empty($search['card_id'])) {
+            $builder->where('apply.card_id', 'like','%'.$search['card_id'].'%');
+        }
+        return $builder;
+    }
+
 
     // Rest omitted for brevity
 
