@@ -4,12 +4,9 @@ namespace App\Console\Commands;
 
 use App\Http\Controllers\Controller;
 use App\Models\Apply;
-use App\Models\Student;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Storage;
 
 // Redis数据同步数据库
 class SyncData extends Command
@@ -48,6 +45,7 @@ class SyncData extends Command
         $this->info('民族学校数据同步---');
         $this->syncData('SCHOOL_NATION');
         $this->info('民族学校数据同步结束---');
+        $this->info('');
 
         $this->info('一中数据同步---');
         $this->syncData('SCHOOL_ONE');
@@ -61,6 +59,7 @@ class SyncData extends Command
      */
     public function syncData(string $school)
     {
+        DB::table('apply')->truncate();
         if ($school == 'SCHOOL_ONE') {
             $apply = '一中';
         } else {
