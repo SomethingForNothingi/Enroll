@@ -82,7 +82,7 @@ class SyncData extends Command
                 $insert[$rank]['batch'] = $batch_key;
                 $insert[$rank]['batch_rank'] = $rank + 1;
                 $insert[$rank]['card_id'] = $card_id;
-                $insert[$rank]['appl2y'] = $apply;
+                $insert[$rank]['apply'] = $apply;
             }
             // 插入数据库
             $this->info('第'.$batch_key.'批次数据同步，共计'.count($insert).'人');
