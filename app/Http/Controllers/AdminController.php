@@ -33,15 +33,14 @@ class AdminController extends Controller
         $params = $request->all();
         $excel = $params['excel'] ?? 0;
         $page = $params['page'] ?? 1;
-        $pageSize = $params['pageSize'] ?? 10;
-
+        $pageSize = $params['per_page'] ?? 10;
         $handle = Student::query()->search($params);
 
         $handle->rightJoin('apply', 'student.card_id', 'apply.card_id');
         if ($excel) {
             $data = $handle->get()->toArray();
         } else {
-            $data = $handle->paginate($pageSize)->appends([ 'page' => $page ])->toArray();
+            $data = $handle->paginate($pageSize)->appends([ 'current_page' => $page ])->toArray();
         }
         return $this->returnData(0, '', $data);
     }
