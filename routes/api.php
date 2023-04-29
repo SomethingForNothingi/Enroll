@@ -30,7 +30,7 @@ Route::any('get_list', [\App\Http\Controllers\AdminController::class, 'getList']
 
 Route::group([ 'middleware' => [ 'auth:api' ] ], function (Router $router) {
     // 退出
-    $router->get('logout', [ AuthController::class, 'logout' ]);
+    $router->post('logout', [ AuthController::class, 'logout' ]);
     // 报名
     $router->post('choose', [ IndexController::class, 'chooseSchool' ]);
     // 当前排名
