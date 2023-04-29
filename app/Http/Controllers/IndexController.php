@@ -107,7 +107,8 @@ class IndexController extends Controller
                 'total'  => $total,
                 'count'  => $count,
                 'rank'   => $rank,
-                'school' => $enroll_school
+                'school' => $enroll_school,
+                'school_key' => $school
             ]));
     }
 
