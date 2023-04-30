@@ -42,6 +42,7 @@ class SyncData extends Command
      */
     public function handle()
     {
+        DB::table('apply')->truncate();
         $this->info('民族学校数据同步---');
         $this->syncData('SCHOOL_NATION');
         $this->info('民族学校数据同步结束---');
@@ -59,7 +60,6 @@ class SyncData extends Command
      */
     public function syncData(string $school)
     {
-        DB::table('apply')->truncate();
         if ($school == 'SCHOOL_ONE') {
             $apply = '一中';
         } else {
