@@ -28,8 +28,8 @@ class Controller extends BaseController
     public const CAN_ENROLL = [
         // 一中
         'SCHOOL_ONE'    => [
-            1 => 30,
-            2 => 22,
+            1 => 3,
+            2 => 5,
             3 => 44,
             4 => 61,
             5 => 31,
@@ -37,8 +37,8 @@ class Controller extends BaseController
         ],
         // 民族
         'SCHOOL_NATION' => [
-            1 => 20,
-            2 => 668,
+            1 => 2,
+            2 => 2,
             3 => 223,
             4 => 125,
             5 => 641,

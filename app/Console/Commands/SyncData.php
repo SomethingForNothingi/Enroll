@@ -73,18 +73,23 @@ class SyncData extends Command
             $data[$k] = Redis::zrevrange($key, 0, -1);
         }
         // 插入数据
-        foreach ($data as $batch_key => $batch_val)
-        {
+        foreach ($data as $batch_key => $batch_val) {
             $insert = [];
+            $need = $controller::CAN_ENROLL[$school][$batch_key];
             // 一批人
             foreach ($batch_val as $rank => $card_id) {
                 $insert[$rank]['batch'] = $batch_key;
                 $insert[$rank]['batch_rank'] = $rank + 1;
                 $insert[$rank]['card_id'] = $card_id;
                 $insert[$rank]['apply'] = $apply;
+                if (($rank + 1) <= $need) {
+                    $insert[$rank]['success'] = 1;
+                } else {
+                    $insert[$rank]['success'] = 0;
+                }
+
             }
-            // 插入数据库
-            $this->info('第'.$batch_key.'批次数据同步，共计'.count($insert).'人');
+            $this->info('第' . $batch_key . '批次数据同步，共计' . count($insert) . '人');
 
             $insert_data = array_chunk($insert, 50);
             foreach ($insert_data as $v) {
