@@ -89,7 +89,7 @@ class IndexController extends Controller
         } else if(Redis::sismember("SET_SCHOOL_NATION", $card_id)){
             $school = self::SCHOOL_NATION;
         } else {
-            return response($this->returnData(self::FAIL, '', []));
+            return response($this->returnData(self::OK, '', []));
         }
         $enroll_school = self::SCHOOL[$school];
 

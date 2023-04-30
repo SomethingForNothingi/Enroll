@@ -40,7 +40,7 @@ class   AuthController extends Controller
     public function logout(): array
     {
         Auth::guard(self::GUARD)->logout();
-        return $this->returnData(self::FORBIDDEN);
+        return $this->returnData(self::OK);
     }
 
     /**
