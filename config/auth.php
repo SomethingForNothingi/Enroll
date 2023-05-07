@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'admin',
     ],
 
     /*
@@ -36,14 +36,15 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-
         'api' => [
             'driver' => 'jwt',
             'provider' => 'users',
+            'hash' => true,
+        ],
+
+        'admin' => [
+            'driver' => 'jwt',
+            'provider' => 'admin',
             'hash' => true,
         ],
     ],
@@ -71,10 +72,10 @@ return [
             'model' => App\Models\Student::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+         'admin' => [
+             'driver' => 'eloquent',
+             'model' => App\Models\Admin::class,
+         ],
     ],
 
     /*

@@ -23,10 +23,8 @@ Route::any('login', [ AuthController::class, 'login' ]);
 Route::any('getcaptcha', [ AuthController::class, 'getCaptcha' ]);
 // 随机获取账号
 Route::any('getup', [ IndexController::class, 'getOne' ]);
-// 管理员
-Route::any('get_columns', [\App\Http\Controllers\AdminController::class,'getColumns']);
-// 获取列表
-Route::any('get_list', [\App\Http\Controllers\AdminController::class, 'getList']);
+
+
 
 Route::group([ 'middleware' => [ 'auth:api' ] ], function (Router $router) {
     // 退出
@@ -38,3 +36,4 @@ Route::group([ 'middleware' => [ 'auth:api' ] ], function (Router $router) {
     // 返回用户信息
     $router->post('getuserinfo', [ IndexController::class, 'getUserInfo' ]);
 });
+

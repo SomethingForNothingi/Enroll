@@ -16,6 +16,8 @@ class Controller extends BaseController
     public const OK = 1;
     public const FORBIDDEN = 2;
     public const GUARD = 'api';
+    public const GUARD_ADMIN = 'admin';
+
 
     /**
      * 初始化
