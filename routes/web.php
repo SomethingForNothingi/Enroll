@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::any('admin_login', [ \App\Http\Controllers\AdminLoginController::class, 'login' ]);
+Route::any('login', [ \App\Http\Controllers\AdminLoginController::class, 'login' ]);
 // 获取验证码
-Route::any('admin_getcaptcha', [ \App\Http\Controllers\AdminController::class, 'getCaptcha' ]);
+Route::any('getcaptcha', [ \App\Http\Controllers\AdminController::class, 'getCaptcha' ]);
 Route::group([ 'middleware' => [ 'auth:admin' ] ], function (\Illuminate\Routing\Router $router) {
     // 管理员
     $router->any('get_columns', [\App\Http\Controllers\AdminController::class,'getColumns']);
