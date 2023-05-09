@@ -42,7 +42,7 @@ class SyncData extends Command
      */
     public function handle()
     {
-        DB::table('apply')->truncate();
+        DB::table('apply')->delete();
         $this->info('民族学校数据同步---');
         $this->syncData('SCHOOL_NATION');
         $this->info('民族学校数据同步结束---');
