@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Apply;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -44,5 +45,13 @@ class AdminController extends Controller
             $data = $handle->paginate($pageSize)->appends([ 'current_page' => $page ])->toArray();
         }
         return $this->returnData(self::OK, '', $data);
+    }
+
+    // 破格录取
+    public function admission(Request $request): array
+    {
+        $id = $request->input('id');
+        Apply::query()->find($id)->update([ 'success' => 1 ]);
+        return $this->returnData(self::OK, '');
     }
 }
