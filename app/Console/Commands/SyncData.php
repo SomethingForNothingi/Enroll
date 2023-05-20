@@ -61,9 +61,9 @@ class SyncData extends Command
     public function syncData(string $school)
     {
         if ($school == 'SCHOOL_ONE') {
-            $apply = '一中';
+            $apply = 'SCHOOL_ONE';
         } else {
-            $apply = '民中';
+            $apply = 'SCHOOL_NATION';
         }
         $controller = new Controller();
         $batch = $controller::CAN_ENROLL[$school];
