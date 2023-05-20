@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Apply;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -53,5 +54,11 @@ class AdminController extends Controller
         $id = $request->input('id');
         Apply::query()->find($id)->update([ 'success' => 1 ]);
         return $this->returnData(self::OK, '');
+    }
+
+    public function logout(): array
+    {
+        Auth::guard(self::GUARD_ADMIN)->logout();
+        return $this->returnData(self::OK);
     }
 }

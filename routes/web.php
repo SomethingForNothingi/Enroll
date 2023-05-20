@@ -24,4 +24,6 @@ Route::group([ 'middleware' => [ 'auth:admin' ] ], function (\Illuminate\Routing
     $router->any('get_list', [ AdminController::class, 'getList']);
     // 破格录取
     $router->post('admission',[ AdminController::class,'admission' ]);
+    // 退出
+    $router->post('logout', [ AdminController::class, 'logout']);
 });
