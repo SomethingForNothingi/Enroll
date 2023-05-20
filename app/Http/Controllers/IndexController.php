@@ -137,4 +137,14 @@ class IndexController extends Controller
     {
         return date('G') % 2 + 1;
     }
+
+    /**
+     * 重置密码
+     */
+    public function reset(Request $request)
+    {
+        $password = $request->input('password');
+        $user_id = Auth::guard(self::GUARD)->user()['id'];
+        Student::query()->find($user_id)->update(['password'=> $password]);
+    }
 }

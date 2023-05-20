@@ -37,5 +37,7 @@ Route::group([ 'middleware' => [ 'auth:api' ] ], function (Router $router) {
     $router->post('getrank', [ IndexController::class, 'nowRank' ]);
     // 返回用户信息
     $router->post('getuserinfo', [ IndexController::class, 'getUserInfo' ]);
+    // 重置密码
+    $router->post('reset', [ IndexController::class, 'reset' ]);
 });
 

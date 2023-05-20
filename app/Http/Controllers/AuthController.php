@@ -70,8 +70,11 @@ class   AuthController extends Controller
     /**
      * 重置密码
      */
-    public function resetPassword($card_id, $id_card, $password)
+    public function resetPassword(Request $request)
     {
+        $card_id = $request->input('card_id');
+        $id_card = $request->input('id_card');
+        $password = $request->input('password');
         $user = Student::query()->where('card_id',$card_id)->where('id_card', $id_card)->first();
         if (!$user)
         {
