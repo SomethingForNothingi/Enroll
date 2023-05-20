@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class   AuthController extends Controller
 {
@@ -63,5 +65,19 @@ class   AuthController extends Controller
         } else {
             return false;
         }
+    }
+
+    /**
+     * 重置密码
+     */
+    public function resetPassword($card_id, $id_card, $password)
+    {
+        $user = Student::query()->where('card_id',$card_id)->where('id_card', $id_card)->first();
+        if (!$user)
+        {
+            return response($this->returnData(self::FAIL,'准考证/身份证号不对'));
+        }
+        $password = Hash::make($password);
+        $user->update(['password'=> $password]);
     }
 }

@@ -23,6 +23,8 @@ Route::any('login', [ AuthController::class, 'login' ]);
 Route::any('getcaptcha', [ AuthController::class, 'getCaptcha' ]);
 // 随机获取账号
 Route::any('getup', [ IndexController::class, 'getOne' ]);
+// 重置密码
+Route::post('resetpassword', [AuthController::class, 'resetPassword']);
 
 
 
