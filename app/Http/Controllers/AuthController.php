@@ -78,7 +78,7 @@ class   AuthController extends Controller
         $user = Student::query()->where('card_id',$card_id)->where('id_card', $id_card)->first();
         if (!$user)
         {
-            return response($this->returnData(self::FAIL,'准考证/身份证号不对'));
+            return $this->returnData(self::FAIL,'准考证/身份证号不对');
         }
         $password = Hash::make($password);
         $user->update(['password'=> $password]);
