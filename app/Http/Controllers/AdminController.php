@@ -45,6 +45,9 @@ class AdminController extends Controller
         } else {
             $data = $handle->paginate($pageSize)->appends([ 'current_page' => $page ])->toArray();
         }
+        foreach ($data['data'] as $k => &$v) {
+            $v['apply'] = IndexController::SCHOOL[$v['apply']];
+        }
         return $this->returnData(self::OK, '', $data);
     }
 
