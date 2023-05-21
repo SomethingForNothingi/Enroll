@@ -9,7 +9,7 @@ class Apply extends Model
 {
     use HasFactory;
     protected $table = 'apply';
-    protected $fillable = [ 'card_id', 'apply', 'batch', 'batch_rank'];
+    protected $fillable = [ 'card_id', 'apply', 'batch', 'batch_rank', 'success'];
 
     public function getFillable()
     {
