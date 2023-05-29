@@ -30,49 +30,31 @@ class Controller extends BaseController
     public const CAN_ENROLL = [
         // 一中
         'SCHOOL_ONE'    => [
-            1 => 3,
-            2 => 5,
-            3 => 44,
-            4 => 61,
-            5 => 31,
-            6 => 135
+            1 => 60,
+            2 => 60,
+            3 => 30,
         ],
         // 民族
         'SCHOOL_NATION' => [
-            1 => 2,
-            2 => 2,
-            3 => 223,
-            4 => 125,
-            5 => 641,
-            6 => 987
+            1 => 40,
+            2 => 40,
+            3 => 20,
         ],
     ];
 
     // 学生排名可登陆登陆时间段
     public const CAN_LOGIN = [
-        8  => [
+        15  => [
             'min' => 1,
             'max' => 100
         ],
-        9  => [
+        16  => [
             'min' => 101,
-            'max' => 215
+            'max' => 200
         ],
-        10 => [
-            'min' => 216,
-            'max' => 330
-        ],
-        11 => [
-            'min' => 331,
-            'max' => 445
-        ],
-        12 => [
-            'min' => 446,
-            'max' => 560
-        ],
-        13 => [
-            'min' => 561,
-            'max' => 1062
+        17 => [
+            'min' => 201,
+            'max' => 250
         ]
     ];
 
@@ -99,11 +81,11 @@ class Controller extends BaseController
     public function validateCanOption($rank): bool
     {
         //TODO 记得注掉
-        return true;
+//        return true;
         //TODO 日期检测，记得核对确认
-        if (date('Y-m-d') == '2023.06.01') {
-            return false;
-        }
+//        if (date('Y-m-d') == '2023.06.01') {
+//            return false;
+//        }
 
         $hour = date('G');
         if (!isset(self::CAN_LOGIN[$hour])) {
