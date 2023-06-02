@@ -44,15 +44,15 @@ class Controller extends BaseController
 
     // 学生排名可登陆登陆时间段
     public const CAN_LOGIN = [
-        15  => [
+        14  => [
             'min' => 1,
             'max' => 100
         ],
-        16  => [
+        15  => [
             'min' => 101,
             'max' => 200
         ],
-        17 => [
+        16 => [
             'min' => 201,
             'max' => 250
         ]

@@ -14,7 +14,7 @@ class Student extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable;
     protected $table = 'student';
-    protected $fillable = ['password'];
+    protected $guarded = ['id'];
 
 
     public function scopeSearch(Builder $builder, array $search): Builder

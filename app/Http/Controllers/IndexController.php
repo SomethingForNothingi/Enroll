@@ -145,6 +145,6 @@ class IndexController extends Controller
     {
         $password = $request->input('password');
         $user_id = Auth::guard(self::GUARD)->user()['id'];
-        Student::query()->find($user_id)->update(['password'=> $password]);
+        Student::query()->find($user_id)->update(['password'=> Hash::make($password)]);
     }
 }
