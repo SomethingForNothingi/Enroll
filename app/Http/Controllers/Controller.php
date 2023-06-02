@@ -99,7 +99,7 @@ class Controller extends BaseController
         $min = $interval['min'];
         $max = $interval['max'];
 
-        if ($rank >= $min || $rank <= $max) {
+        if ($rank >= $min && $rank <= $max) {
             return true;
         }
 

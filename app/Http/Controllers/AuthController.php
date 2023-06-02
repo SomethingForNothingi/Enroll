@@ -23,9 +23,7 @@ class   AuthController extends Controller
             'card_id' => $params['card_id'],
             'password' => $params['password']
         ];
-        Log::info('账号密码', $credentials);
         $token = Auth::guard(self::GUARD)->attempt($credentials);
-        Log::info('Token', ['token' => $token]);
 
         if (!$token) {
             return $this->returnData(self::FAIL,'账户信息错误');
