@@ -30,29 +30,29 @@ class Controller extends BaseController
     public const CAN_ENROLL = [
         // 一中
         'SCHOOL_ONE'    => [
-            10 => 60,
-            11 => 60,
-            12 => 30,
+            14 => 60,
+            15 => 60,
+            16 => 30,
         ],
         // 民族
         'SCHOOL_NATION' => [
-            10 => 40,
-            11 => 40,
-            12 => 20,
+            14 => 40,
+            15 => 40,
+            16 => 20,
         ],
     ];
 
     // 学生排名可登陆登陆时间段
     public const CAN_LOGIN = [
-        10  => [
+        14  => [
             'min' => 1,
             'max' => 100
         ],
-        11  => [
+        15  => [
             'min' => 101,
             'max' => 200
         ],
-        12 => [
+        16 => [
             'min' => 201,
             'max' => 250
         ]
