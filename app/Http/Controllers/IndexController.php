@@ -129,6 +129,19 @@ class IndexController extends Controller
         return $this->returnData(self::OK, '', $data);
     }
 
+    /**
+     * 返回当前状态
+     * @return array
+     */
+    public function status()
+    {
+        // 验证
+        $userInfo = Auth::guard(self::GUARD)->user();
+        // 验证是否允许该时段登陆
+        $status = $this->validateCanOption($userInfo->total_rank);
+        return $this->returnData(self::OK, '', ['status' => $status]);
+    }
+
 
     /**
      * 返回当前报名批次

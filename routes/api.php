@@ -24,8 +24,7 @@ Route::any('getcaptcha', [ AuthController::class, 'getCaptcha' ]);
 // 随机获取账号
 Route::any('getup', [ IndexController::class, 'getOne' ]);
 // 重置密码
-Route::post('resetpassword', [AuthController::class, 'resetPassword']);
-
+Route::post('resetpassword', [ AuthController::class, 'resetPassword' ]);
 
 
 Route::group([ 'middleware' => [ 'auth:api' ] ], function (Router $router) {
@@ -37,6 +36,8 @@ Route::group([ 'middleware' => [ 'auth:api' ] ], function (Router $router) {
     $router->post('getrank', [ IndexController::class, 'nowRank' ]);
     // 返回用户信息
     $router->post('getuserinfo', [ IndexController::class, 'getUserInfo' ]);
+    // 返回当前状态
+    $router->post('status', [ IndexController::class, 'status' ]);
     // 重置密码
     $router->post('reset', [ IndexController::class, 'reset' ]);
 });

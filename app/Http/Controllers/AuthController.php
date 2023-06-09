@@ -32,10 +32,10 @@ class   AuthController extends Controller
         $userData = Auth::guard(self::GUARD)->user();
 
         // 验证是否允许该时段登陆
-        $canLogin = $this->validateCanOption($userData->total_rank);
-        if(!$canLogin) {
-            return response($this->returnData(self::FORBIDDEN,'超出报名时段'));
-        }
+//        $canLogin = $this->validateCanOption($userData->total_rank);
+//        if(!$canLogin) {
+//            return response($this->returnData(self::FORBIDDEN,'超出报名时段'));
+//        }
 
         return $this->returnData(self::OK, '登陆成功', ['token' => $token, 'user' => $userData]);
     }
