@@ -55,7 +55,8 @@ class AdminController extends Controller
     public function admission(Request $request): array
     {
         $id = $request->input('id');
-        Apply::query()->find($id)->update([ 'success' => 1 ]);
+        $apply = $request->input('apply');
+        Apply::query()->find($id)->update([ 'success' => 1, 'apply' => $apply ]);
         return $this->returnData(self::OK, '');
     }
 
