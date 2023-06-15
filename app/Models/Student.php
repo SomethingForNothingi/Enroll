@@ -32,7 +32,8 @@ class Student extends Authenticatable implements JWTSubject
         }
 
         if (!empty($search['card_id'])) {
-            $builder->where('apply.card_id', 'like','%'.$search['card_id'].'%');
+//            $builder->where('apply.card_id', $search['card_id']);
+            $builder->whereRaw('apply.card_id = ? or student_id = ?', [$search['card_id'], $search['card_id']]);
         }
         return $builder;
     }
