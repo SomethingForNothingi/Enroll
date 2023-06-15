@@ -40,8 +40,7 @@ class AdminController extends Controller
 
         if ($excel) {
             $handle = Student::query();
-            $result = $handle->get()->toArray();
-            $data['data'] = $result;
+            $data = $handle->get()->toArray();
         } else {
             $handle = Student::query()->search($params);
             $handle->rightJoin('apply', 'student.card_id', 'apply.card_id')->orderByDesc('student.total_score');
