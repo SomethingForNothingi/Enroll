@@ -46,10 +46,11 @@ class AdminController extends Controller
             $handle = Student::query()->search($params);
             $handle->rightJoin('apply', 'student.card_id', 'apply.card_id')->orderByDesc('student.total_score');
             $data = $handle->paginate($pageSize)->appends([ 'current_page' => $page ])->toArray();
+            foreach ($data['data'] as $k => &$v) {
+                $v['apply'] = IndexController::SCHOOL[$v['apply']];
+            }
         }
-        foreach ($data['data'] as $k => &$v) {
-            $v['apply'] = IndexController::SCHOOL[$v['apply']];
-        }
+
         return $this->returnData(self::OK, '', $data);
     }
 
