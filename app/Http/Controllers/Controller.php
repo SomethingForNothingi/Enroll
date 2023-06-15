@@ -81,7 +81,7 @@ class Controller extends BaseController
     public function validateCanOption($rank): bool
     {
         //TODO 记得注掉
-//        return true;
+        return true;
         //TODO 日期检测，记得核对确认
 //        if (date('Y-m-d') == '2023.06.01') {
 //            return false;
