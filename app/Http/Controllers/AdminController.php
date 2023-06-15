@@ -41,6 +41,9 @@ class AdminController extends Controller
         if ($excel) {
             $handle = Student::query()->rightJoin('apply', 'student.card_id', 'apply.card_id')->orderByDesc('student.total_score');
             $data = $handle->get()->toArray();
+            foreach ($data as $k => &$v1) {
+                $v1['apply'] = IndexController::SCHOOL[$v1['apply']];
+            }
         } else {
             $handle = Student::query()->search($params);
             $handle->rightJoin('apply', 'student.card_id', 'apply.card_id')->orderByDesc('student.total_score');
