@@ -74,9 +74,8 @@ class   AuthController extends Controller
     public function resetPassword(Request $request)
     {
         $card_id = $request->input('card_id');
-        $id_card = $request->input('id_card');
         $password = $request->input('password');
-        $user = Student::query()->where('card_id',$card_id)->where('idcard', $id_card)->first();
+        $user = Student::query()->where('card_id',$card_id)->first();
         if (!$user)
         {
             return $this->returnData(self::FAIL,'准考证/身份证号不对');
