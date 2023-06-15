@@ -37,12 +37,14 @@ class AdminController extends Controller
         $excel = $params['excel'] ?? 0;
         $page = $params['page'] ?? 1;
         $pageSize = $params['per_page'] ?? 10;
-        $handle = Student::query()->search($params);
 
-        $handle->rightJoin('apply', 'student.card_id', 'apply.card_id')->orderByDesc('student.total_score');
         if ($excel) {
-            $data = $handle->get()->toArray();
+            $handle = Student::query();
+            $result = $handle->get()->toArray();
+            $data['data'] = $result;
         } else {
+            $handle = Student::query()->search($params);
+            $handle->rightJoin('apply', 'student.card_id', 'apply.card_id')->orderByDesc('student.total_score');
             $data = $handle->paginate($pageSize)->appends([ 'current_page' => $page ])->toArray();
         }
         foreach ($data['data'] as $k => &$v) {
