@@ -39,7 +39,7 @@ class AdminController extends Controller
         $pageSize = $params['per_page'] ?? 10;
 
         if ($excel) {
-            $handle = Student::query();
+            $handle = Student::query()->rightJoin('apply', 'student.card_id', 'apply.card_id')->orderByDesc('student.total_score');
             $data = $handle->get()->toArray();
         } else {
             $handle = Student::query()->search($params);
