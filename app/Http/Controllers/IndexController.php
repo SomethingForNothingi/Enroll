@@ -97,8 +97,10 @@ class IndexController extends Controller
         $key = $school . '_' . $batch;
         // 返回全部报名人员信息
         $rank = $this->getStudentRank($key, $card_id);
-        //TODO 需要加入统招人数（由计算公式所得）
-        $total = self::CAN_ENROLL[$school][$batch];
+        $total = self::CAN_ENROLL[$school][$batch] ?? '';
+        if (!$total) {
+            return response($this->returnData(self::OK, '', []));
+        }
 
         $count = $this->getStudentCountByKey($key);
 
