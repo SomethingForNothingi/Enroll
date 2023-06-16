@@ -20,7 +20,7 @@ class   AuthController extends Controller
         }
         //验证
         $credentials =[
-            'card_id' => $params['card_id'],
+            'student_id' => $params['card_id'],
             'password' => $params['password']
         ];
         $token = Auth::guard(self::GUARD)->attempt($credentials);
