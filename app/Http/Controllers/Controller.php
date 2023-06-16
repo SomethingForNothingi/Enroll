@@ -36,7 +36,7 @@ class Controller extends BaseController
             11 => 76,
             12 => 74,
             13 => 226,
-            14 => 226,
+            14 => 265,
             15 => 330,
         ],
         // 民族
@@ -47,7 +47,7 @@ class Controller extends BaseController
             11 => 40,
             12 => 40,
             13 => 115,
-            14 => 115,
+            14 => 142,
             15 => 167,
         ],
     ];
