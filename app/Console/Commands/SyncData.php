@@ -74,6 +74,7 @@ class SyncData extends Command
         }
         // 插入数据
         foreach ($data as $batch_key => $batch_val) {
+            $batch_key -= 7;
             $insert = [];
             $need = $controller::CAN_ENROLL[$school][$batch_key];
             // 一批人
