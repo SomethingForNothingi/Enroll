@@ -105,7 +105,7 @@ class IndexController extends Controller
             }
         }
         if ($batch == 0)
-        {
+            {
             return response($this->returnData(self::OK, '', []));
         }
 
@@ -121,6 +121,7 @@ class IndexController extends Controller
 
         return response($this->returnData(self::OK, '',
             [
+                'batch' => $batch - 8,
                 'total'  => $total,
                 'count'  => $count,
                 'rank'   => $rank,
