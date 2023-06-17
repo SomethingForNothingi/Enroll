@@ -120,7 +120,7 @@ class IndexController extends Controller
                 'rank'       => $rank,
                 'school'     => $enroll_school,
                 'school_key' => $school,
-                'admission'  => Redis::smismember('admission', $card_id)
+                'admission'  => Redis::sismember('admission', $card_id)
             ]));
     }
 
