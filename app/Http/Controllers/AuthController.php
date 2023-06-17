@@ -83,5 +83,6 @@ class   AuthController extends Controller
         }
         $password = Hash::make($password);
         $user->update(['password'=> $password]);
+        return $this->returnData(self::OK,'',[]);
     }
 }
