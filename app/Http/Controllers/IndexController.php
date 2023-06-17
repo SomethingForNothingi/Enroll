@@ -24,6 +24,7 @@ class IndexController extends Controller
         'SCHOOL_ONE'    => '托克托县第一中学',
         'SCHOOL_NATION' => '托克托县民族中学'
     ];
+
     /**
      * 选择学校
      * @param Request $request
@@ -81,33 +82,30 @@ class IndexController extends Controller
     {
         $userInfo = Auth::guard(self::GUARD)->user();
         $card_id = $userInfo->card_id;
+        $batch = 0;
+        // 判断用户所属批次
+        $total_rank = $userInfo['total_rank'];
+        foreach (self::CAN_LOGIN as $k => $v) {
+            if ($total_rank >= $v['min'] && $total_rank <= $v['max']) {
+                $batch = $k;
+                break;
+            }
+        }
+        if ($batch == 0) {
+            return response($this->returnData(self::OK, '', []));
+        }
 
         // 获取报名学校
         $isOne = Redis::sismember("SET_SCHOOL_ONE", $card_id);
         if ($isOne) {
             $school = self::SCHOOL_ONE;
-        } else if(Redis::sismember("SET_SCHOOL_NATION", $card_id)){
+        } else if (Redis::sismember("SET_SCHOOL_NATION", $card_id)) {
             $school = self::SCHOOL_NATION;
         } else {
-            return response($this->returnData(self::OK, '', []));
+            return response($this->returnData(self::OK, '', [ 'batch' => $batch - 8 ]));
         }
         $enroll_school = self::SCHOOL[$school];
 
-        $batch = 0;
-
-        // 判断用户所属批次
-        $total_rank = $userInfo['total_rank'];
-        foreach (self::CAN_LOGIN as $k => $v) {
-            if ($total_rank >= $v['min'] && $total_rank <= $v['max'])
-            {
-                $batch = $k;
-                break;
-            }
-        }
-        if ($batch == 0)
-            {
-            return response($this->returnData(self::OK, '', []));
-        }
 
         $key = $school . '_' . $batch;
         // 返回全部报名人员信息
@@ -121,11 +119,11 @@ class IndexController extends Controller
 
         return response($this->returnData(self::OK, '',
             [
-                'batch' => $batch - 8,
-                'total'  => $total,
-                'count'  => $count,
-                'rank'   => $rank,
-                'school' => $enroll_school,
+                'batch'      => $batch - 8,
+                'total'      => $total,
+                'count'      => $count,
+                'rank'       => $rank,
+                'school'     => $enroll_school,
                 'school_key' => $school
             ]));
     }
@@ -157,7 +155,7 @@ class IndexController extends Controller
         $userInfo = Auth::guard(self::GUARD)->user();
         // 验证是否允许该时段登陆
         $status = $this->validateCanOption($userInfo->total_rank);
-        return $this->returnData(self::OK, '', ['status' => $status]);
+        return $this->returnData(self::OK, '', [ 'status' => $status ]);
     }
 
 
@@ -176,6 +174,6 @@ class IndexController extends Controller
     {
         $password = $request->input('password');
         $user_id = Auth::guard(self::GUARD)->user()['id'];
-        Student::query()->find($user_id)->update(['password'=> Hash::make($password)]);
+        Student::query()->find($user_id)->update([ 'password' => Hash::make($password) ]);
     }
 }
