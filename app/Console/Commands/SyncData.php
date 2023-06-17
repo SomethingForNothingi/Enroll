@@ -84,6 +84,7 @@ class SyncData extends Command
                 $insert[$rank]['apply'] = $apply;
                 if (($rank + 1) <= $need) {
                     $insert[$rank]['success'] = 1;
+                    Redis::sadd('admission', $card_id);
                 } else {
                     $insert[$rank]['success'] = 0;
                 }

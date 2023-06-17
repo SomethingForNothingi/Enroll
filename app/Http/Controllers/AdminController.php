@@ -7,6 +7,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 
 class AdminController extends Controller
 {
@@ -81,7 +82,9 @@ class AdminController extends Controller
     {
         $id = $request->input('id');
         $apply = $request->input('apply');
-        Apply::query()->find($id)->update([ 'success' => 1, 'apply' => $apply ]);
+        $handle = Apply::query()->find($id);
+        $handle->update([ 'success' => 1, 'apply' => $apply ]);
+        Redis::sadd('admission', $handle->card_id);
         return $this->returnData(self::OK, '');
     }
 

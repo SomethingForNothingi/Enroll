@@ -35,24 +35,27 @@ class IndexController extends Controller
         // 验证
         $userInfo = Auth::guard(self::GUARD)->user();
         $card_id = $userInfo->card_id;
+        $score = $userInfo['total_rank'];
+
         $school = $request->get('school');
         // 报名学校是否正确
         if (!in_array($school, [ self::SCHOOL_NATION, self::SCHOOL_ONE ])) {
             return response($this->returnData(self::FAIL, '传入学校错误，请传入正确key值，SCHOOL_ONE=>托克托县第一中学，SCHOOL_NATION=>托克托县民族中学'));
         }
         // 验证是否允许该时段登陆
-        $canLogin = $this->validateCanOption($userInfo->total_rank);
+        $canLogin = $this->validateCanOption($score);
         if (!$canLogin) {
             return response($this->returnData(self::FORBIDDEN, '超出报名时段'));
         }
+
+
+        $batch = $this->getBatch($score);
 
         if ($school == self::SCHOOL_ONE) {
             $other_school = self::SCHOOL_NATION;
         } else {
             $other_school = self::SCHOOL_ONE;
         }
-        // 批次
-        $batch = $this->getBatch();
 
         $key = $school . '_' . $batch;
         $school2 = $other_school . '_' . $batch;
@@ -60,7 +63,6 @@ class IndexController extends Controller
         // 从另一个学校里清除
         Redis::zrem($school2, $card_id);
         // 存入redis zset中
-        $score = $userInfo->total_score;
         Redis::zadd($key, $score, $card_id);
 
 
@@ -82,15 +84,8 @@ class IndexController extends Controller
     {
         $userInfo = Auth::guard(self::GUARD)->user();
         $card_id = $userInfo->card_id;
-        $batch = 0;
-        // 判断用户所属批次
         $total_rank = $userInfo['total_rank'];
-        foreach (self::CAN_LOGIN as $k => $v) {
-            if ($total_rank >= $v['min'] && $total_rank <= $v['max']) {
-                $batch = $k;
-                break;
-            }
-        }
+        $batch = $this->getBatch($total_rank);
         if ($batch == 0) {
             return response($this->returnData(self::OK, '', []));
         }
@@ -124,7 +119,8 @@ class IndexController extends Controller
                 'count'      => $count,
                 'rank'       => $rank,
                 'school'     => $enroll_school,
-                'school_key' => $school
+                'school_key' => $school,
+                'admission'  => Redis::smismember('admission', $card_id)
             ]));
     }
 
@@ -162,9 +158,13 @@ class IndexController extends Controller
     /**
      * 返回当前报名批次
      */
-    public function getBatch(): int
+    public function getBatch($total_rank)
     {
-        return date('G');
+        foreach (self::CAN_LOGIN as $k => $v) {
+            if ($total_rank >= $v['min'] && $total_rank <= $v['max']) {
+                return $k;
+            }
+        }
     }
 
     /**
