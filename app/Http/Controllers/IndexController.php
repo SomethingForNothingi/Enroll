@@ -93,7 +93,22 @@ class IndexController extends Controller
         }
         $enroll_school = self::SCHOOL[$school];
 
-        $batch = $this->getBatch();
+        $batch = 0;
+
+        // 判断用户所属批次
+        $total_rank = $userInfo['total_rank'];
+        foreach (self::CAN_LOGIN as $k => $v) {
+            if ($total_rank >= $v['min'] && $total_rank <= $v['max'])
+            {
+                $batch = $k;
+                break;
+            }
+        }
+        if ($batch == 0)
+        {
+            return response($this->returnData(self::OK, '', []));
+        }
+
         $key = $school . '_' . $batch;
         // 返回全部报名人员信息
         $rank = $this->getStudentRank($key, $card_id);
