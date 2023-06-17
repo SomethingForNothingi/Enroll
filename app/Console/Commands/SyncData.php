@@ -78,7 +78,7 @@ class SyncData extends Command
             $need = $controller::CAN_ENROLL[$school][$batch_key];
             // 一批人
             foreach ($batch_val as $rank => $card_id) {
-                $insert[$rank]['batch'] = $batch_key - 7;
+                $insert[$rank]['batch'] = $batch_key - 8;
                 $insert[$rank]['batch_rank'] = $rank + 1;
                 $insert[$rank]['card_id'] = $card_id;
                 $insert[$rank]['apply'] = $apply;
@@ -89,7 +89,7 @@ class SyncData extends Command
                 }
 
             }
-            $batch_key -= 7;
+            $batch_key -= 8;
             $this->info('第' . $batch_key . '批次数据同步，共计' . count($insert) . '人');
 
             $insert_data = array_chunk($insert, 50);
