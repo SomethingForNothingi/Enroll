@@ -39,21 +39,41 @@ class AdminController extends Controller
         $pageSize = $params['per_page'] ?? 10;
 
         if ($excel) {
-            $handle = Student::query()->rightJoin('apply', 'student.card_id', 'apply.card_id')->orderByDesc('student.total_score');
-            $data = $handle->get()->toArray();
-            foreach ($data as $k => &$v1) {
-                $v1['apply'] = IndexController::SCHOOL[$v1['apply']];
+            $data = Apply::query()->with(['student'])->orderBy('batch')->orderBy('batch_rank')->get()->toArray();
+            foreach ($data as $k => &$v) {
+                $v['apply'] = IndexController::SCHOOL[$v['apply']];
             }
+            $data = $this->dataRebuild($data);
         } else {
-            $handle = Student::query()->search($params);
-            $handle->rightJoin('apply', 'student.card_id', 'apply.card_id')->orderByDesc('student.total_score');
-            $data = $handle->paginate($pageSize)->appends([ 'current_page' => $page ])->toArray();
+            $data = Apply::query()->with(['student'])->search($params)->orderBy('batch')->orderBy('batch_rank')->paginate($pageSize)->appends([ 'current_page' => $page ])->toArray();
             foreach ($data['data'] as $k => &$v) {
                 $v['apply'] = IndexController::SCHOOL[$v['apply']];
             }
+            $data['data'] = $this->dataRebuild($data['data']);
         }
 
         return $this->returnData(self::OK, '', $data);
+    }
+
+    public function dataRebuild($data): array
+    {
+        $newData = [];
+        foreach ($data as $k1 => $v1) {
+            foreach ($v1 as $k2 => $v2) {
+                if ($k2 == 'student') {
+                    foreach ($v2 as $k3 => $v3) {
+                        if ($k3 == 'id' || $k3 == 'password') {
+                            continue;
+                        }
+                        $newData[$k1][$k3] = $v3;
+                    }
+                } else {
+                    $newData[$k1][$k2] = $v2;
+                }
+            }
+
+        }
+        return $newData;
     }
 
     // 破格录取
