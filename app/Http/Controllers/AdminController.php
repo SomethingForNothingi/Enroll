@@ -43,12 +43,22 @@ class AdminController extends Controller
             $data = Apply::query()->with(['student'])->orderBy('batch')->orderBy('batch_rank')->get()->toArray();
             foreach ($data as $k => &$v) {
                 $v['apply'] = IndexController::SCHOOL[$v['apply']];
+                if ($v['success'] == 1) {
+                    $v['suc'] = '已录取';
+                } else {
+                    $v['suc'] = '未录取';
+                }
             }
             $data = $this->dataRebuild($data);
         } else {
             $data = Apply::query()->with(['student'])->search($params)->orderBy('batch')->orderBy('batch_rank')->paginate($pageSize)->appends([ 'current_page' => $page ])->toArray();
             foreach ($data['data'] as $k => &$v) {
                 $v['apply'] = IndexController::SCHOOL[$v['apply']];
+                if ($v['success'] == 1) {
+                    $v['suc'] = '已录取';
+                } else {
+                    $v['suc'] = '未录取';
+                }
             }
             $data['data'] = $this->dataRebuild($data['data']);
         }
